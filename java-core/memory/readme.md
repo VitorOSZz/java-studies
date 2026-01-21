@@ -1,4 +1,4 @@
-# 1- Memory
+# 1- Memory Model
 ## In the memory we have two parts: *Stack* and *Heap*
 
 ### Stack
@@ -61,9 +61,42 @@ Tv
 Computer
 ```
 
-![alt text](images/2-1.aliasing.png "Memory area")
-![alt text](images/2-2.aliasing.png "Memory area")
+![alt text](images/2-1.aliasing.png "Aliasing")
+![alt text](images/2-2.aliasing.png "Aliasing with Strings")
 
 #### "But why are there two String objects here if "TV" is no longer in the code?" the answer is on next chapter: Garbage Collector
 
 # 3- Garbage Collector
+### Garbage Collector
+Gargabage Collector is a technology to delete from the heap objects that won't be referenced again. So if there is an object in the heap and it won't be referenced in the code again, then the garbage collector deletes it.
+### Scope
+Another mechanism to free memory is Scope, which isn't a garbage collector. Scope is an automated mechanism that allows variables in the stack to be removed when they go out of scope.
+
+# 4- Arrays in the memory
+
+```
+public class Main {
+    public static void main(String[] args) {
+        int[] array = new int[3]; // [] is to create an array
+
+        for (int i = 0; i < array.length; i++) {
+            array[i] = (i+1) * 10;
+        }
+    }
+}
+```
+![alt text](images/4.1.Array-in-memory.png "Array in the memory")
+
+# Array with class in the memory
+```
+public class Main {
+    public static void main(String[] args) {
+        Product[] stock = new Product[3];
+
+        stock[0] = new Product("TV", 599.99, 5);
+        stock[1] = new Product("Computer", 2499.99, 3);
+        stock[2] = new Product("Cellphone", 899.99, 10);
+    }
+}
+```
+![alt text](images/4.2.Array.png "Array with class in the memory")
