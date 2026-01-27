@@ -1,14 +1,14 @@
 package com.worker.domain;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 public class HourContract {
 
-    private final Instant date;
+    private final LocalDate date;
     private final long valuePerHour;
     private final int hours;
 
-    public HourContract(Instant date, int hours, long valuePerHour) {
+    public HourContract(LocalDate date, int hours, long valuePerHour) {
         this.date = date;
         this.hours = hours;
         this.valuePerHour = valuePerHour;
@@ -18,7 +18,7 @@ public class HourContract {
         return valuePerHour*hours;
     }
 
-    public Instant getDate() {
+    public LocalDate getDate() {
         return date;
     }
 }

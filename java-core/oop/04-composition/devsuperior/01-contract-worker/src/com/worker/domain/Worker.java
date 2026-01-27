@@ -1,9 +1,6 @@
 package com.worker.domain;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.ZoneId;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,45 +41,15 @@ public class Worker {
         hourContractList.remove(contract);
     }
 
-    public long income(int year, int month) {
-        StringBuilder dateString = new StringBuilder();
-        // "2024-11-20T15:30:00Z"
-        dateString.append(year);
-        dateString.append("-");
-        if (month < 10) {
-            dateString.append("0");
-            dateString.append(month);
-        } else {
-            dateString.append(month);
-        }
-        dateString.append("-");
-        dateString.append("01T15:30:00Z");
-        Instant data = Instant.parse(dateString);
+    public long income(LocalDate date) {
 
-        int monthR = LocalDateTime.ofInstant(data, ZoneId.systemDefault()).getMonthValue();
-//        System.out.println(monthR);
-        Instant dataAfter = null;
-        switch (monthR) {
-            case 1, 3, 5, 7, 8, 10 , 12:
-                dataAfter = data.plus(31, ChronoUnit.DAYS);
-                break;
-            case 2:
-                dataAfter = data.plus(28, ChronoUnit.DAYS);
-                break;
-            case 4, 6, 9, 11:
-                dataAfter = data.plus(30, ChronoUnit.DAYS);
-                break;
-        }
-//        System.out.println();
+        LocalDate dateAfter = date;
+        date = date.minus(1, ChronoUnit.DAYS);
+        dateAfter = date.plus(1, ChronoUnit.MONTHS);
 
-        data = data.minus(1, ChronoUnit.DAYS);
-//        System.out.println(data);
-//        System.out.println(dataAfter);
-
-        Long money = 0L;
+        long money = 0L;
         for (HourContract hourContract : hourContractList) {
-//            System.out.println(hourContract.getDate().isAfter(data.minus(1, ChronoUnit.DAYS)));
-            if (hourContract.getDate().isAfter(data) && hourContract.getDate().isBefore(dataAfter)) {
+            if (hourContract.getDate().isAfter(date) && hourContract.getDate().isBefore(dateAfter)) {
                 money += hourContract.getTotalValue();
             }
         }

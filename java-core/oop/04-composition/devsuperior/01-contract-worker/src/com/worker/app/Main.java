@@ -5,8 +5,7 @@ import com.worker.domain.HourContract;
 import com.worker.domain.Worker;
 import com.worker.domain.WorkerLevel;
 
-import java.time.Instant;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
@@ -33,13 +32,13 @@ public class Main {
         System.out.print("How many contracts to this worker: ");
         int quantityContract = scanner.nextInt();
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Worker worker = new Worker(name, workerLevel, salary, department);
         for (int i = 0; i < quantityContract; i++) {
             System.out.println("Enter contract #" + (i+1) + " data: ");
             System.out.print("Date (DD/MM/YYYY): ");
             scanner.nextLine();
-            String dateString = scanner.nextLine();
-            Instant date = dateStringToDateInstant(dateString);
+            LocalDate date = LocalDate.parse(scanner.nextLine(), formatter);
 
             System.out.print("Value per hour: ");
             long valuePerHour = (long) (scanner.nextDouble()*1000L);
@@ -52,41 +51,11 @@ public class Main {
 
         System.out.print("Enter month and year to calculate income (MM/YYYY): ");
         scanner.nextLine();
-        String dateToCheckString = scanner.nextLine();
-        StringBuilder yearString = new StringBuilder();
-        yearString.append(dateToCheckString.charAt(dateToCheckString.length() - 4));
-        yearString.append(dateToCheckString.charAt(dateToCheckString.length()-3));
-        yearString.append(dateToCheckString.charAt(dateToCheckString.length()-2));
-        yearString.append(dateToCheckString.charAt(dateToCheckString.length()-1));
-
-        StringBuilder monthString = new StringBuilder();
-        monthString.append(dateToCheckString.charAt(0));
-        monthString.append(dateToCheckString.charAt(1));
-        int year = Integer.valueOf(String.valueOf(yearString));
-        int month = Integer.valueOf(String.valueOf(monthString));
+        LocalDate dateContract = LocalDate.parse("01/"+ scanner.nextLine(), formatter);
 
         System.out.println();
         System.out.println("Name: " + worker.getName());
         System.out.println("Department: " + worker.getDepartment().getName());
-        System.out.println("Income for " + monthString + "/" +yearString + ": " + ( (worker.getBaseSalary()/1000.00) + (worker.income(year, month)/1000.00) ) );
-    }
-
-    public static Instant dateStringToDateInstant(String dateString) {
-        StringBuilder stringFormattedDate = new StringBuilder();
-
-        stringFormattedDate.append((dateString.charAt((dateString.length()-4))));
-        stringFormattedDate.append((dateString.charAt((dateString.length()-3))));
-        stringFormattedDate.append((dateString.charAt((dateString.length()-2))));
-        stringFormattedDate.append((dateString.charAt((dateString.length()-1))));
-        stringFormattedDate.append("-"); // 5 = -
-        stringFormattedDate.append((dateString.charAt((dateString.length()-7))));
-        stringFormattedDate.append((dateString.charAt((dateString.length()-6))));
-        stringFormattedDate.append("-"); // 8 = -
-        stringFormattedDate.append((dateString.charAt((dateString.length()-10))));
-        stringFormattedDate.append((dateString.charAt((dateString.length()-9))));
-        stringFormattedDate.append("T00:00:00Z");
-
-
-        return Instant.parse(String.valueOf(stringFormattedDate));
+        System.out.println("Income for " + String.valueOf(dateContract.getMonth()).toLowerCase() + " " + dateContract.getYear() + ": " + ( (worker.getBaseSalary()/1000.00) + (worker.income(dateContract)/1000.00) ) );
     }
 }

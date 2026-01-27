@@ -1,0 +1,9 @@
+Vendas
+10
+vendas@lojatop.com
+99883355
+2
+João Silva
+8000.00
+Maria Torres
+10000.00
